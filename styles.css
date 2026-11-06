@@ -481,9 +481,11 @@
 	line-height: 6px;
 }
 
-/* Every cell renders the row, but with no source contributing a dot it is empty
-   and its 6px floor plus the cell's gap would push the number off-center. */
-.periodic-calendar-view .dot-container:empty {
+/* Every cell renders the row. With no source contributing a dot anywhere, its
+   6px floor plus the cell's gap would push every number off-center, so it goes.
+   Scoped to the whole view, not to each cell: with at least one dot on screen,
+   the reserved row is what keeps every number in a row on one baseline. */
+.periodic-calendar-view:not(:has(.dot)) .dot-container {
 	display: none;
 }
 
