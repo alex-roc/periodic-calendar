@@ -516,6 +516,17 @@ settings left behind.
 original plugin's class names are worth mirroring where practical, so users'
 existing CSS snippets keep working. Verify in both light and dark themes.
 
+Two rules that each cost a bug report (#1, #2):
+
+- **Type sits on one scale.** Everything in the grid and its labels is sized
+  with `--font-ui-*`. An `em` variable like `--font-smaller` follows whatever the
+  sidebar inherits, which the user's font size or theme can raise, and then the
+  weekday header and week numbers outgrow the days they label.
+- **No `:has()`.** The directory's scanner flags it and the warning lands on the
+  public scorecard. A state that depends on the view's contents is a class set
+  from TS instead: `is-dotless`, toggled by `scheduleDotCheck` in `day-cell.ts`,
+  is the example.
+
 ### The touch-target floor needs two signals, and one of them is not emulated
 
 `--cp-touch-target` is declared on `.periodic-calendar-view` (`0px`) and raised to

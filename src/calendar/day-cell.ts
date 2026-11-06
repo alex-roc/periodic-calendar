@@ -58,6 +58,26 @@ export interface CellSpec {
 	flags: CellFlags;
 }
 
+/** Views that already have a dot check queued for this tick. */
+const pendingDotChecks = new WeakSet<HTMLElement>();
+
+/**
+ * Marks the view `is-dotless` when no cell in it holds a dot, which is what lets
+ * the stylesheet drop the reserved dot row only then. CSS could say it alone
+ * with `:has(.dot)`, but the community directory's scanner flags every `:has`.
+ *
+ * Every repaint calls `setDots` once per cell, so the check is coalesced into
+ * one microtask per view: it runs before the browser paints, and once.
+ */
+function scheduleDotCheck(view: HTMLElement): void {
+	if (pendingDotChecks.has(view)) return;
+	pendingDotChecks.add(view);
+	queueMicrotask(() => {
+		pendingDotChecks.delete(view);
+		view.toggleClass('is-dotless', view.querySelector('.dot') === null);
+	});
+}
+
 /**
  * One interactive cell of the calendar.
  *
@@ -153,6 +173,8 @@ export class CalendarCell {
 				el.style.setProperty('--periodic-calendar-dot-color', dot.color);
 			}
 		}
+		const view = this.el.closest<HTMLElement>('.periodic-calendar-view');
+		if (view) scheduleDotCheck(view);
 	}
 
 	/**
