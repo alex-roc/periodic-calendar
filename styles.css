@@ -114,7 +114,7 @@
 	margin: 0 var(--size-2-1);
 	padding: 0 var(--size-2-2);
 	color: var(--color-button);
-	font-size: var(--font-smaller);
+	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
@@ -173,7 +173,7 @@
 	padding: var(--size-2-1);
 	background-color: var(--color-background-heading);
 	color: var(--color-text-heading);
-	font-size: var(--font-smaller);
+	font-size: var(--font-ui-small);
 	font-weight: var(--font-medium);
 	letter-spacing: 0.02em;
 	text-align: center;
@@ -231,6 +231,12 @@
  * scale. Matching that is the whole reason these are not `--font-ui-smaller` and
  * `--font-smallest`: at those sizes the grid was legible but noticeably meaner
  * than the plugin it replaces.
+ *
+ * Everything that labels the grid (weekday header, week numbers, the Today
+ * button) sits on the same UI scale as the days, never on an `em` size like
+ * `--font-smaller`: an `em` follows whatever the sidebar inherits, which the
+ * user's font size and theme can push well past 13 px, and then the labels
+ * outgrow the days they label (#2).
  */
 .periodic-calendar-view .day,
 .periodic-calendar-view .week-num {
@@ -258,7 +264,7 @@
 .periodic-calendar-view .week-num {
 	background-color: var(--color-background-weeknum);
 	color: var(--color-text-weeknum);
-	font-size: var(--font-smaller);
+	font-size: var(--font-ui-small);
 }
 
 .periodic-calendar-view .day:hover,
